@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wassim <wassim@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wbaali <wbaali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 11:56:07 by ainthana          #+#    #+#             */
-/*   Updated: 2026/01/13 19:43:37 by wassim           ###   ########.fr       */
+/*   Updated: 2026/01/22 14:08:25 by wbaali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-
 
 static void	init_config(t_config *cfg)
 {
@@ -42,7 +41,6 @@ static void	init_config(t_config *cfg)
 	init_keys(cfg);
 }
 
-
 void	init_keys(t_config *config)
 {
 	config->keys.w = 0;
@@ -52,7 +50,6 @@ void	init_keys(t_config *config)
 	config->keys.left = 0;
 	config->keys.right = 0;
 }
-
 
 void	init_player_angle(t_config *config)
 {
@@ -70,14 +67,14 @@ void	free_config(t_config *cfg)
 {
 	int	y;
 
-	if (cfg->textures.north)
-		free(cfg->textures.north);
-	if (cfg->textures.south)
-		free(cfg->textures.south);
-	if (cfg->textures.west)
-		free(cfg->textures.west);
-	if (cfg->textures.east)
-		free(cfg->textures.east);
+	free_config_two(cfg);
+	if (cfg->win)
+		mlx_destroy_window(cfg->mlx, cfg->win);
+	if (cfg->mlx)
+	{
+		mlx_destroy_display(cfg->mlx);
+		free(cfg->mlx);
+	}
 	if (cfg->map.grid)
 	{
 		y = 0;

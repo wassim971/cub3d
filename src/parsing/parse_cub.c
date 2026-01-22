@@ -3,19 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ainthana <ainthana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wbaali <wbaali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 14:49:40 by ainthana          #+#    #+#             */
-/*   Updated: 2025/12/15 12:58:49 by ainthana         ###   ########.fr       */
+/*   Updated: 2026/01/21 16:20:02 by wbaali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
+static void	free_configz(t_config *cfg)
+{
+	int	y;
+
+	if (cfg->textures.north)
+		free(cfg->textures.north);
+	if (cfg->textures.south)
+		free(cfg->textures.south);
+	if (cfg->textures.west)
+		free(cfg->textures.west);
+	if (cfg->textures.east)
+		free(cfg->textures.east);
+	if (cfg->map.grid)
+	{
+		y = 0;
+		while (y < cfg->map.height)
+		{
+			free(cfg->map.grid[y]);
+			y++;
+		}
+		free(cfg->map.grid);
+	}
+}
+
 static void	free_parsing(char **tab, t_config *config, char *msg)
 {
 	free_split(tab);
-	free_config(config);
+	free_configz(config);
 	if (msg)
 		printf("Error : %s\n", msg);
 	exit(1);

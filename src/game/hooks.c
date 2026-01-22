@@ -3,21 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wassim <wassim@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wbaali <wbaali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 19:11:35 by wassim            #+#    #+#             */
-/*   Updated: 2026/01/13 19:11:39 by wassim           ###   ########.fr       */
+/*   Updated: 2026/01/22 14:10:30 by wbaali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-/**
- * close_game - Ferme proprement le jeu
- */
 int	close_game(t_config *config)
 {
-	free_config(config);
 	if (config->img.img)
 		mlx_destroy_image(config->mlx, config->img.img);
 	if (config->tex_north.img)
@@ -28,20 +24,11 @@ int	close_game(t_config *config)
 		mlx_destroy_image(config->mlx, config->tex_west.img);
 	if (config->tex_east.img)
 		mlx_destroy_image(config->mlx, config->tex_east.img);
-	if (config->win)
-		mlx_destroy_window(config->mlx, config->win);
-	if (config->mlx)
-	{
-		mlx_destroy_display(config->mlx);
-		free(config->mlx);
-	}
+	free_config(config);
 	exit(0);
 	return (0);
 }
 
-/**
- * key_press - Gestion des touches pressées
- */
 int	key_press(int keycode, t_config *config)
 {
 	if (keycode == KEY_ESC)
@@ -61,9 +48,6 @@ int	key_press(int keycode, t_config *config)
 	return (0);
 }
 
-/**
- * key_release - Gestion des touches relâchées
- */
 int	key_release(int keycode, t_config *config)
 {
 	if (keycode == KEY_W)
@@ -81,9 +65,6 @@ int	key_release(int keycode, t_config *config)
 	return (0);
 }
 
-/**
- * game_loop - Boucle principale du jeu
- */
 int	game_loop(t_config *config)
 {
 	if (config->keys.w)
@@ -95,16 +76,13 @@ int	game_loop(t_config *config)
 	if (config->keys.d)
 		move_right(config);
 	if (config->keys.left)
-		rotate_left(config);
-	if (config->keys.right)
 		rotate_right(config);
+	if (config->keys.right)
+		rotate_left(config);
 	render_frame(config);
 	return (0);
 }
 
-/**
- * setup_hooks - Configure tous les hooks MLX
- */
 void	setup_hooks(t_config *config)
 {
 	mlx_hook(config->win, 2, 1L << 0, key_press, config);
